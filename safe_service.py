@@ -134,7 +134,7 @@ class SafeService:
                     Web3.keccak(text="SafeTx(address to,uint256 value,bytes data,uint8 operation,uint256 safeTxGas,uint256 baseGas,uint256 gasPrice,address gasToken,address refundReceiver,uint256 nonce)"),
                     to,
                     value,
-                    Web3.keccak(hexstr=data),
+                    Web3.keccak(bytes.fromhex(data[2:] if data.startswith('0x') else data)) if data and data != '0x' else Web3.keccak(text=''),
                     operation,
                     safe_tx_gas,
                     base_gas,
@@ -204,14 +204,18 @@ def encode_packed(types: list, values: list) -> bytes:
     result = b""
     for t, v in zip(types, values):
         if t == "address":
-            result += bytes.fromhex(v[2:].lower().zfill(40))
+            # Remove 0x prefix and ensure address is 40 chars, then convert to bytes
+            addr_hex = v[2:].lower() if v.startswith('0x') else v.lower()
+            result += bytes.fromhex(addr_hex.zfill(40))
         elif t == "uint256":
             result += v.to_bytes(32, byteorder='big')
         elif t == "uint8":
             result += v.to_bytes(1, byteorder='big')
         elif t == "bytes32":
             if isinstance(v, str):
-                v = bytes.fromhex(v[2:])
+                # Handle hex string, with or without 0x prefix
+                hex_str = v[2:] if v.startswith('0x') else v
+                v = bytes.fromhex(hex_str)
             result += v
         elif t == "bytes1":
             result += v

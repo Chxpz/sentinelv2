@@ -17,6 +17,10 @@ import asyncio
 logger = logging.getLogger(__name__)
 
 # Store pending transactions for approval
+# NOTE: This is a simple in-memory store for MVP. In production, use:
+# - Redis for distributed caching
+# - Database with proper TTL/cleanup
+# - Message queue for reliable delivery
 pending_transactions: Dict[str, Dict] = {}
 
 
