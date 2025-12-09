@@ -231,11 +231,14 @@ sentinelv2/
 ├── safe_service.py      # Safe multisig wallet operations
 ├── database.py          # Supabase database interface
 ├── config.py            # Configuration and settings
+├── monitor.py           # Transaction monitoring service (placeholder)
 ├── schema.sql           # Database schema for Supabase
+├── setup_verify.py      # Setup verification script
 ├── requirements.txt     # Python dependencies
 ├── Dockerfile           # Docker container configuration
 ├── docker-compose.yml   # Docker Compose setup
 ├── .env.example         # Example environment variables
+├── EXAMPLES.md          # Usage examples and guide
 └── README.md            # This file
 ```
 
